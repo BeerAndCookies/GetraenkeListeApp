@@ -497,7 +497,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
       Paint paint = new Paint();
       paint.setColor(getResources().getColor(R.color.result_points));
       if (points.length == 2) {
-        paint.setStrokeWidth(4.0f);
+        paint.setStrokeWidth(4.0f); // the width of the green line in the result picture
         drawLine(canvas, paint, points[0], points[1], scaleFactor);
       } else if (points.length == 4 &&
                  (rawResult.getBarcodeFormat() == BarcodeFormat.UPC_A ||
@@ -506,7 +506,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         drawLine(canvas, paint, points[0], points[1], scaleFactor);
         drawLine(canvas, paint, points[2], points[3], scaleFactor);
       } else {
-        paint.setStrokeWidth(10.0f);
+        paint.setStrokeWidth(4.0f);
         for (ResultPoint point : points) {
           if (point != null) {
             canvas.drawPoint(scaleFactor * point.getX(), scaleFactor * point.getY(), paint);
@@ -637,7 +637,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
       if (rawResultString.length() > 32) {
         rawResultString = rawResultString.substring(0, 32) + " ...";
       }
-      statusView.setText(getString(resultHandler.getDisplayTitle()) + " : " + rawResultString);
+      statusView.setText(getString(resultHandler.getDisplayTitle()) + " : " + rawResultString);  //editing this edits the Product Found result on the result after a succesfull scan
     }
 
     if (copyToClipboard && !resultHandler.areContentsSecure()) {
