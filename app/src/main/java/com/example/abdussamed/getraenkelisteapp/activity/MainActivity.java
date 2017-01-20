@@ -3,7 +3,6 @@ package com.example.abdussamed.getraenkelisteapp.activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -31,11 +30,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.abdussamed.getraenkelisteapp.R;
 import com.example.abdussamed.getraenkelisteapp.fragment.HomeFragment;
+import com.example.abdussamed.getraenkelisteapp.fragment.LogInFragment;
 import com.example.abdussamed.getraenkelisteapp.fragment.MoviesFragment;
 import com.example.abdussamed.getraenkelisteapp.fragment.NotificationsFragment;
-import com.example.abdussamed.getraenkelisteapp.fragment.PhotosFragment;
 import com.example.abdussamed.getraenkelisteapp.fragment.SettingsFragment;
-import com.example.abdussamed.getraenkelisteapp.other.CircleTransform;
+import com.example.abdussamed.getraenkelisteapp.other.DatabaseHelper;
+
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -51,18 +51,19 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtName, txtWebsite;
     private Toolbar toolbar;
     private FloatingActionButton fab;
+    private DatabaseHelper dbHelper = new DatabaseHelper(this);
 
     // urls to load navigation header background image
     // and profile image
     private static final String urlNavHeaderBg = "http://api.androidhive.info/images/nav-menu-header-bg.jpg";
-    private static final String urlProfileImg = "https://lh3.googleusercontent.com/eCtE_G34M9ygdkmOpYvCag1vBARCmZwnVS6rS5t4JLzJ6QgQSBquM0nuTsCpLhYbKljoyS-txg";
+    private static final String urlProfileImg = "";
 
     // index to identify current nav menu item
     public static int navItemIndex = 0;
 
     // tags used to attach the fragments
     private static final String TAG_HOME = "home";
-    private static final String TAG_PHOTOS = "photos";
+    private static final String TAG_LOGIN = "login";
     private static final String TAG_MOVIES = "movies";
     private static final String TAG_NOTIFICATIONS = "notifications";
     private static final String TAG_SETTINGS = "settings";
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar); //causes error, 2 times toolbar defined
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mHandler = new Handler();
@@ -100,11 +101,27 @@ public class MainActivity extends AppCompatActivity {
         // load toolbar titles from string resources
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
 
+        //clicklistener of floatingactionbutton
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Log In/Sign Up Field", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+                navItemIndex=1;
+                CURRENT_TAG=TAG_LOGIN;
+                selectNavMenu();
+                setToolbarTitle();
+                Fragment fragment = getHomeFragment();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                        android.R.anim.fade_out);
+                fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
+                fragmentTransaction.commitAllowingStateLoss();
+
+
+                toggleFab();
+
             }
         });
 
@@ -135,8 +152,8 @@ public class MainActivity extends AppCompatActivity {
      */
     private void loadNavHeader() {
         // name, website
-        txtName.setText("Ravi Tamada");
-        txtWebsite.setText("www.androidhive.info");
+        txtName.setText("Max Mustermann"); //here you set the username
+        txtWebsite.setText("Rennschmiede Pforzheim");
 
         // loading header background image
         Glide.with(this).load(urlNavHeaderBg)
@@ -144,14 +161,14 @@ public class MainActivity extends AppCompatActivity {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgNavHeaderBg);
 
-        // Loading profile image
+        /* // Loading profile image
         Glide.with(this).load(urlProfileImg)
                 .crossFade()
                 .thumbnail(0.5f)
                 .bitmapTransform(new CircleTransform(this))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgProfile);
-
+    */
         // showing dot next to notifications label
         navigationView.getMenu().getItem(3).setActionView(R.layout.menu_dot);
     }
@@ -215,9 +232,9 @@ public class MainActivity extends AppCompatActivity {
                 HomeFragment homeFragment = new HomeFragment();
                 return homeFragment;
             case 1:
-                // photos
-                PhotosFragment photosFragment = new PhotosFragment();
-                return photosFragment;
+                // login
+                LogInFragment logInFragment = new LogInFragment();
+                return logInFragment;
             case 2:
                 // movies fragment
                 MoviesFragment moviesFragment = new MoviesFragment();
@@ -258,9 +275,9 @@ public class MainActivity extends AppCompatActivity {
                         navItemIndex = 0;
                         CURRENT_TAG = TAG_HOME;
                         break;
-                    case R.id.nav_photos:
+                    case R.id.nav_login:
                         navItemIndex = 1;
-                        CURRENT_TAG = TAG_PHOTOS;
+                        CURRENT_TAG = TAG_LOGIN;
                         break;
                     case R.id.nav_movies:
                         navItemIndex = 2;
@@ -274,14 +291,14 @@ public class MainActivity extends AppCompatActivity {
                         navItemIndex = 4;
                         CURRENT_TAG = TAG_SETTINGS;
                         break;
-                    case R.id.nav_about_us:
+                    case R.id.nav_admin_login:
                         // launch new intent instead of loading fragment
-                        startActivity(new Intent(MainActivity.this, AboutUsActivity.class));
+                        startActivity(new Intent(MainActivity.this, AdminLogIn.class));
                         drawer.closeDrawers();
                         return true;
-                    case R.id.nav_privacy_policy:
+                    case R.id.nav_blacklist_card:
                         // launch new intent instead of loading fragment
-                        startActivity(new Intent(MainActivity.this, PrivacyPolicyActivity.class));
+                        startActivity(new Intent(MainActivity.this, BlacklistCard.class));
                         drawer.closeDrawers();
                         return true;
                     default:
@@ -294,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     menuItem.setChecked(true);
                 }
-                menuItem.setChecked(true);
+                //menuItem.setChecked(true);
 
                 loadHomeFragment();
 
@@ -327,6 +344,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
+            //closes drawer when back is pressed
             drawer.closeDrawers();
             return;
         }
@@ -466,48 +484,34 @@ public class MainActivity extends AppCompatActivity {
         return out;
     }
 
+    public void onLoginSignupClicked(View view){
+
+        if(view.getId() == R.id.Blogin){
+            EditText editUser = (EditText) findViewById(R.id.TFusername0);
+            String strUser = editUser.getText().toString();
+
+            EditText editPass = (EditText) findViewById(R.id.TFpassword0);
+            String strPass = editPass.getText().toString();
+
+            String returnedPass = dbHelper.searchPass(strUser);
+            if(strPass.equals(returnedPass)){
+                Intent intent = new Intent(MainActivity.this, WelcomeScreen.class);
+                intent.putExtra("username", strUser);
+                startActivity(intent);
+            }
+            else{
+                Toast passToast = Toast.makeText(MainActivity.this,"Username and Password don't match!",Toast.LENGTH_SHORT );
+                passToast.show();
+            }
+
+        }
+        if(view.getId() == R.id.Bsignup){
+            Intent intent = new Intent(MainActivity.this, SignUp.class);
+            startActivity(intent);
+        }
+
+    }
+
 }
 
-
-class MyNetworkAsync extends AsyncTask<String, Void, String>{
-
-    @Override
-    protected String doInBackground(String... string) {
-        String a = "notdefined";
-        try {
-            a = getHTML(string[0].toString());
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        Log.d("getHTML", a);
-
-        return null;
-    }
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
-    @Override
-    protected void onPostExecute(String s) {
-        super.onPostExecute(s);
-    }
-
-    public static String getHTML(String urlToRead) throws Exception {
-        StringBuilder result = new StringBuilder();
-        URL url = new URL(urlToRead);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        String line;
-        while ((line = rd.readLine()) != null) {
-            result.append(line);
-        }
-        rd.close();
-        String s = result.toString();
-        Log.d("getHTMLinsideFunc",s);
-        return s;
-    }
-}
 

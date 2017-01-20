@@ -13,12 +13,12 @@ import com.example.abdussamed.getraenkelisteapp.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link PhotosFragment.OnFragmentInteractionListener} interface
+ * {@link LogInFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link PhotosFragment#newInstance} factory method to
+ * Use the {@link LogInFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PhotosFragment extends Fragment {
+public class LogInFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -30,7 +30,7 @@ public class PhotosFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public PhotosFragment() {
+    public LogInFragment() {
         // Required empty public constructor
     }
 
@@ -43,11 +43,11 @@ public class PhotosFragment extends Fragment {
      * @return A new instance of fragment PhotosFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PhotosFragment newInstance(String param1, String param2) {
-        PhotosFragment fragment = new PhotosFragment();
+    public static LogInFragment newInstance(/*String param1, String param2*/) {
+        LogInFragment fragment = new LogInFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        //args.putString(ARG_PARAM1, param1);
+        //args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }

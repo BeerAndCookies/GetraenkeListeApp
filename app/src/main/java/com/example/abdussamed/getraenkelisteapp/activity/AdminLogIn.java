@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.example.abdussamed.getraenkelisteapp.R;
 
-public class AboutUsActivity extends AppCompatActivity {
+public class AdminLogIn extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

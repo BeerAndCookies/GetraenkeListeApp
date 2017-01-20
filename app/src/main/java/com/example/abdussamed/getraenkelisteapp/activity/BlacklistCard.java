@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.example.abdussamed.getraenkelisteapp.R;
 
-public class PrivacyPolicyActivity extends AppCompatActivity {
+public class BlacklistCard extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

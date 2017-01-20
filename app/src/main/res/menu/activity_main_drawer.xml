@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!--This menu renders the Navigation Drawer list items. Here we set the icons and labels.
+    You can also notice here <group> is used to combine multiple items under single levels.
+    An <item> also can be used group multiple child items with a title. This provides a horizontal
+    separator between the two sets.-->
+
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/nav_home" />
         <item
-            android:id="@+id/nav_photos"
+            android:id="@+id/nav_login"
             android:icon="@drawable/ic_photo_library_black_24dp"
-            android:title="@string/nav_photos" />
+            android:title="@string/nav_logIn" />
         <item
             android:id="@+id/nav_movies"
             android:icon="@drawable/ic_local_movies_black_24dp"
@@ -29,11 +34,11 @@
     <item android:title="Other">
         <menu>
             <item
-                android:id="@+id/nav_about_us"
-                android:title="@string/nav_about_us" />
+                android:id="@+id/nav_admin_login"
+                android:title="@string/nav_admin_login" />
             <item
-                android:id="@+id/nav_privacy_policy"
-                android:title="@string/privacy_policy" />
+                android:id="@+id/nav_blacklist_card"
+                android:title="@string/nav_blacklist_card" />
         </menu>
     </item>
 

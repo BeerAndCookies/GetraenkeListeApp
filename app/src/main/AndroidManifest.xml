@@ -33,11 +33,11 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.AboutUsActivity" />
-        <activity android:name=".activity.PrivacyPolicyActivity" />
-        <activity android:name=".activity.LoginDisplay" />
-        <activity android:name=".activity.WelcomeScreen"></activity>
+        <activity android:name=".activity.MainActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AdminLogIn" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.BlacklistCard" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SignUp" android:screenOrientation="portrait" />
+        <activity android:name=".activity.WelcomeScreen" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
