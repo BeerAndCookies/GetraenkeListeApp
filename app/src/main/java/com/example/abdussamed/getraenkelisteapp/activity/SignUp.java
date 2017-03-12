@@ -91,7 +91,7 @@ public class SignUp extends Activity {
                 //insert details to database
 
                 User user = new User();
-                user.setName(namestr);
+                user.setFname(namestr);
                 user.setUsername(usernamestr);
                 user.setPass(pass1str);
                 user.setEmail(emailstr);
